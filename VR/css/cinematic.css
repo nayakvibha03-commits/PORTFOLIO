@@ -1,0 +1,608 @@
+/*=========================================================
+    CINEMATIC LAYER
+    Film-style presentation: letterbox open, grain, vignette,
+    focus-pull reveals, spotlight sweeps, projector flicker.
+    Uses ONLY the existing theme tokens (--primary/--secondary/
+    --accent) — accent stays gold/amber, never rose/pink.
+=========================================================*/
+
+/*---------------------------------------------------------
+    1. LETTERBOX CURTAIN (intro reveal)
+---------------------------------------------------------*/
+
+.cine-letterbox{
+    position:fixed;
+    left:0;
+    width:100%;
+    background:#000;
+    z-index:100000;
+    pointer-events:none;
+    will-change:transform;
+}
+
+.cine-letterbox-top{
+    top:0;
+    height:52%;
+    transform:translateY(0);
+}
+
+.cine-letterbox-bottom{
+    bottom:0;
+    height:52%;
+    transform:translateY(0);
+}
+
+.cine-letterbox.is-open.cine-letterbox-top{
+    transform:translateY(-100%);
+    transition:transform 1.1s cubic-bezier(.76,0,.24,1);
+}
+
+.cine-letterbox.is-open.cine-letterbox-bottom{
+    transform:translateY(100%);
+    transition:transform 1.1s cubic-bezier(.76,0,.24,1);
+}
+
+.cine-letterbox-top::after,
+.cine-letterbox-bottom::after{
+    content:"";
+    position:absolute;
+    left:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,transparent,rgba(232,185,63,.55),transparent);
+}
+
+.cine-letterbox-top::after{ bottom:0; }
+.cine-letterbox-bottom::after{ top:0; }
+
+/*---------------------------------------------------------
+    1b. MOVIE TRAILER — opening sequence
+---------------------------------------------------------*/
+
+.cine-trailer{
+    position:fixed;
+    inset:0;
+    z-index:200000;
+    background:radial-gradient(ellipse at center,#0b0f1a 0%,#000 75%);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .5s ease;
+    overflow:hidden;
+}
+
+.cine-trailer.is-playing{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.cine-trailer.is-hiding{
+    opacity:0;
+    transition:opacity .7s ease;
+}
+
+.cine-trailer-card{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    opacity:0;
+    padding:0 24px;
+}
+
+.cine-reel-icon{
+    font-size:34px;
+    color:var(--accent);
+    margin-bottom:18px;
+    animation:cine-reel-spin 2.2s linear infinite;
+}
+
+@keyframes cine-reel-spin{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+}
+
+.cine-eyebrow{
+    font-family:var(--font-serif);font-style:italic;font-weight:600;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    font-size:14px;
+    color:var(--gray);
+}
+
+.cine-trailer-name{
+    font-family:var(--font-display);
+    font-weight:400;
+    font-size:clamp(56px,12vw,150px);
+    letter-spacing:4px;
+    background:linear-gradient(100deg,#fff 20%,var(--accent) 50%,#fff 80%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 0 60px rgba(232,185,63,.35);
+}
+
+.cine-trailer-flare{
+    position:absolute;
+    top:0;
+    left:-20%;
+    width:30%;
+    height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);
+    transform:skewX(-18deg);
+    pointer-events:none;
+}
+
+.cine-trailer-sub{
+    margin-top:10px;
+    font-size:14px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gray);
+}
+
+.cine-card-tagline p:first-child{
+    font-family:var(--font-serif);
+    font-style:italic;
+    font-size:clamp(18px,3vw,26px);
+    color:var(--text);
+    letter-spacing:1px;
+}
+
+@keyframes cine-card-fade{
+    0%{ opacity:0; transform:scale(.92); }
+    15%{ opacity:1; transform:scale(1); }
+    80%{ opacity:1; }
+    100%{ opacity:0; transform:scale(1.04); }
+}
+
+@keyframes cine-title-crash{
+    0%{ opacity:0; transform:scale(3.2) rotate(-3deg); filter:blur(24px); }
+    22%{ opacity:1; transform:scale(1) rotate(0deg); filter:blur(0); }
+    30%{ transform:scale(1.045); }
+    38%{ transform:scale(1); }
+    85%{ opacity:1; }
+    100%{ opacity:0; transform:scale(1.08); filter:blur(6px); }
+}
+
+@keyframes cine-flare-sweep{
+    0%,15%{ left:-30%; opacity:0; }
+    22%{ opacity:1; }
+    45%{ left:120%; opacity:0; }
+    100%{ left:120%; opacity:0; }
+}
+
+@keyframes cine-tagline-in{
+    0%{ opacity:0; transform:translateY(18px); letter-spacing:6px; }
+    20%{ opacity:1; transform:translateY(0); letter-spacing:1px; }
+    85%{ opacity:1; }
+    100%{ opacity:0; transform:translateY(-10px); }
+}
+
+.cine-trailer.is-playing .cine-card-studio{
+    animation:cine-card-fade 1.4s ease both;
+    animation-delay:.1s;
+}
+
+.cine-trailer.is-playing .cine-card-title{
+    animation:cine-title-crash 1.8s cubic-bezier(.2,.7,.2,1) both;
+    animation-delay:1.6s;
+}
+
+.cine-trailer.is-playing .cine-card-title .cine-trailer-flare{
+    animation:cine-flare-sweep 1.8s ease both;
+    animation-delay:1.6s;
+}
+
+.cine-trailer.is-playing .cine-card-tagline{
+    animation:cine-tagline-in 1.2s ease both;
+    animation-delay:3.5s;
+}
+
+.cine-skip-btn{
+    position:absolute;
+    right:24px;
+    bottom:28px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(232,185,63,.4);
+    color:var(--text);
+    border-radius:6px;
+    font-size:13px;
+    letter-spacing:1px;
+    cursor:pointer;
+    backdrop-filter:blur(6px);
+    opacity:0;
+    transition:opacity .4s ease .3s, background .25s ease, border-color .25s ease;
+}
+
+.cine-trailer.is-playing .cine-skip-btn{
+    opacity:1;
+}
+
+.cine-skip-btn:hover{
+    background:rgba(232,185,63,.15);
+    border-color:var(--accent);
+    color:var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce){
+    .cine-trailer{ display:none; }
+}
+
+/*---------------------------------------------------------
+    2. FILM GRAIN + VIGNETTE (ambient, whole page)
+---------------------------------------------------------*/
+
+.cine-grain{
+    position:fixed;
+    inset:-60px;
+    z-index:9998;
+    pointer-events:none;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:cine-grain-shift .5s steps(4) infinite;
+}
+
+@keyframes cine-grain-shift{
+    0%{ transform:translate(0,0); }
+    25%{ transform:translate(-40px,20px); }
+    50%{ transform:translate(20px,-30px); }
+    75%{ transform:translate(-20px,-15px); }
+    100%{ transform:translate(0,0); }
+}
+
+.cine-vignette{
+    position:fixed;
+    inset:0;
+    z-index:5;
+    pointer-events:none;
+    background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(0,0,0,.20) 75%,rgba(0,0,0,.5) 100%);
+}
+
+/*---------------------------------------------------------
+    3. HERO SPOTLIGHT (follows cursor, like a stage light)
+---------------------------------------------------------*/
+
+.hero{
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(232,185,63,.10),transparent 70%);
+    transition:background .15s ease-out;
+}
+
+.hero-container{
+    position:relative;
+    z-index:2;
+}
+
+/*---------------------------------------------------------
+    4. TITLE SEQUENCE — hero name reveal
+    (a single crash-zoom on the whole title, not split into
+    letters — splitting fought with the nested <span>R</span>
+    and its color rule, and could leave the name invisible)
+---------------------------------------------------------*/
+
+.cine-hero-title-in{
+    opacity:0;
+    filter:blur(18px);
+    transform:scale(1.35);
+    animation:cine-hero-crash 1.1s cubic-bezier(.2,.75,.25,1) forwards;
+}
+
+@keyframes cine-hero-crash{
+    0%{
+        opacity:0;
+        filter:blur(18px);
+        transform:scale(1.35);
+    }
+    55%{
+        opacity:1;
+        filter:blur(2px);
+    }
+    75%{
+        transform:scale(.98);
+    }
+    100%{
+        opacity:1;
+        filter:blur(0);
+        transform:scale(1);
+    }
+}
+
+.cine-letter{
+    display:inline-block;
+    opacity:0;
+    filter:blur(14px);
+    transform:translateY(30px) scale(1.15);
+    animation:cine-letter-in .9s cubic-bezier(.2,.8,.25,1) forwards;
+}
+
+@keyframes cine-letter-in{
+    0%{
+        opacity:0;
+        filter:blur(14px);
+        transform:translateY(30px) scale(1.15);
+    }
+    60%{
+        opacity:1;
+        filter:blur(2px);
+    }
+    100%{
+        opacity:1;
+        filter:blur(0);
+        transform:translateY(0) scale(1);
+    }
+}
+
+.cine-subtitle-in{
+    opacity:0;
+    animation:cine-fade-up 1s ease .9s forwards;
+}
+
+@keyframes cine-fade-up{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+/*---------------------------------------------------------
+    5. FOCUS-PULL SCROLL REVEALS
+    (elements rack into focus, like a camera lens)
+---------------------------------------------------------*/
+
+.cine-focus{
+    opacity:0;
+    filter:blur(10px) saturate(.5);
+    transform:scale(1.06);
+    transition:opacity 1s cubic-bezier(.2,.7,.2,1),
+                filter 1s cubic-bezier(.2,.7,.2,1),
+                transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+.cine-focus.in-view{
+    opacity:1;
+    filter:blur(0) saturate(1);
+    transform:scale(1);
+}
+
+@media (prefers-reduced-motion: reduce){
+    .cine-focus{
+        opacity:1;
+        filter:none;
+        transform:none;
+        transition:none;
+    }
+    .cine-letter{
+        opacity:1;
+        filter:none;
+        transform:none;
+        animation:none;
+    }
+}
+
+/*---------------------------------------------------------
+    6. GOLD SHINE SWEEP — project cards (like a spotlight
+    passing over a movie poster)
+---------------------------------------------------------*/
+
+.project-card::after{
+    background:linear-gradient(115deg,transparent 30%,rgba(232,185,63,.16) 45%,rgba(255,255,255,.10) 50%,transparent 65%);
+    background-size:250% 250%;
+    background-position:150% 150%;
+    opacity:0;
+    transition:opacity .4s ease;
+}
+
+.project-card:hover::after{
+    opacity:1;
+    animation:cine-shine-sweep 1.1s ease forwards;
+}
+
+@keyframes cine-shine-sweep{
+    from{ background-position:150% 150%; }
+    to{ background-position:-50% -50%; }
+}
+
+.project-card{
+    position:relative;
+}
+
+.project-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:6px;
+    box-shadow:inset 0 0 0 1px rgba(232,185,63,0);
+    transition:box-shadow .4s ease;
+    pointer-events:none;
+    z-index:1;
+}
+
+.project-card:hover::before{
+    box-shadow:inset 0 0 0 1px rgba(232,185,63,.35);
+}
+
+/*---------------------------------------------------------
+    7. PROJECTOR FLICKER — nav logo + section titles on hover
+---------------------------------------------------------*/
+
+.logo:hover,
+.section-title h2:hover{
+    animation:cine-flicker 1.1s linear;
+}
+
+@keyframes cine-flicker{
+    0%,100%{ opacity:1; }
+    5%{ opacity:.4; }
+    10%{ opacity:1; }
+    15%{ opacity:.6; }
+    20%{ opacity:1; }
+    50%{ opacity:1; }
+    52%{ opacity:.5; }
+    54%{ opacity:1; }
+}
+
+/*---------------------------------------------------------
+    8. CLAPBOARD DIVIDER for section titles (subtle film-strip
+    accent under headings, uses existing --accent gold only)
+---------------------------------------------------------*/
+
+.section-title{
+    position:relative;
+}
+
+.section-title::after{
+    content:"";
+    display:block;
+    width:70px;
+    height:3px;
+    margin-top:14px;
+    background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 16px);
+    transform-origin:left;
+    transform:scaleX(0);
+    animation:cine-reel-draw 1s ease forwards;
+    animation-timeline:view();
+    animation-range:entry 0% cover 30%;
+}
+
+@supports not (animation-timeline:view()){
+    .section-title::after{
+        transform:scaleX(1);
+        animation:none;
+    }
+}
+
+/*---------------------------------------------------------
+    9. CINEMATIC BUTTON HOVER — light-leak sweep
+---------------------------------------------------------*/
+
+.btn-primary,
+.btn-secondary{
+    position:relative;
+    overflow:hidden;
+}
+
+.btn-primary::before,
+.btn-secondary::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-60%;
+    width:40%;
+    height:100%;
+    background:linear-gradient(115deg,transparent,rgba(255,255,255,.35),transparent);
+    transform:skewX(-20deg);
+    transition:left .6s ease;
+    pointer-events:none;
+}
+
+.btn-primary:hover::before,
+.btn-secondary:hover::before{
+    left:130%;
+}
+
+/*---------------------------------------------------------
+    10. SCENE SLATES — a brief chapter-card cut, like a
+    reel change, the first time each major section enters
+    view. Shutter-opens vertically from the centerline.
+---------------------------------------------------------*/
+
+.cine-scene-slate{
+    position:fixed;
+    inset:0;
+    z-index:99998;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:#050403;
+    opacity:0;
+    pointer-events:none;
+    transform:scaleY(.02);
+    transform-origin:center;
+}
+
+.cine-scene-slate.is-playing{
+    animation:cine-slate-cut 1000ms cubic-bezier(.6,0,.15,1) forwards;
+}
+
+@keyframes cine-slate-cut{
+    0%{ opacity:0; transform:scaleY(.02); }
+    14%{ opacity:1; transform:scaleY(1); }
+    68%{ opacity:1; transform:scaleY(1); }
+    100%{ opacity:0; transform:scaleY(1); }
+}
+
+.cine-scene-slate .cine-slate-num{
+    font-family:var(--font-serif);
+    font-style:italic;
+    font-weight:600;
+    letter-spacing:3px;
+    color:var(--accent);
+    font-size:16px;
+    margin-bottom:12px;
+    opacity:0;
+}
+
+.cine-scene-slate .cine-slate-title{
+    font-family:var(--font-display);
+    font-weight:400;
+    font-size:clamp(40px,7vw,88px);
+    letter-spacing:5px;
+    text-transform:uppercase;
+    color:var(--white);
+    opacity:0;
+}
+
+.cine-scene-slate .cine-slate-rule{
+    width:0;
+    height:1px;
+    background:var(--primary);
+    margin-top:24px;
+}
+
+.cine-scene-slate.is-playing .cine-slate-num,
+.cine-scene-slate.is-playing .cine-slate-title{
+    animation:cine-slate-text-in .5s ease forwards;
+    animation-delay:.24s;
+}
+
+.cine-scene-slate.is-playing .cine-slate-title{
+    animation-delay:.32s;
+}
+
+@keyframes cine-slate-text-in{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+.cine-scene-slate.is-playing .cine-slate-rule{
+    animation:cine-slate-rule-in .6s ease forwards;
+    animation-delay:.42s;
+}
+
+@keyframes cine-slate-rule-in{
+    from{ width:0; }
+    to{ width:110px; }
+}
+
+@media(max-width:600px){
+    .cine-scene-slate .cine-slate-title{
+        letter-spacing:3px;
+    }
+}

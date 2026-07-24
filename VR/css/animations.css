@@ -1,0 +1,633 @@
+/*=========================================
+            GLOBAL TRANSITIONS
+=========================================*/
+
+*{
+
+    transition:
+        background-color .35s ease,
+        color .35s ease,
+        border-color .35s ease,
+        transform .35s ease,
+        box-shadow .35s ease;
+
+}
+
+/*=========================================
+            PAGE LOADER
+=========================================*/
+
+.loader-logo{
+
+    animation: loaderPulse 1.6s infinite;
+}
+
+@keyframes loaderPulse{
+
+    0%{
+
+        transform:scale(.9);
+
+        box-shadow:0 0 10px rgba(201,161,59,.3);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+        box-shadow:0 0 40px rgba(201,161,59,.7);
+
+    }
+
+    100%{
+
+        transform:scale(.9);
+
+        box-shadow:0 0 10px rgba(201,161,59,.3);
+
+    }
+
+}
+
+/*=========================================
+        PROFILE IMAGE FLOATING
+=========================================*/
+
+.profile-card{
+
+    animation:floating 5s ease-in-out infinite;
+}
+
+@keyframes floating{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-18px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*=========================================
+        GLOW RING
+=========================================*/
+
+.glow-ring{
+
+    animation:ringRotate 8s linear infinite;
+}
+
+@keyframes ringRotate{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/*=========================================
+            LOGO
+=========================================*/
+
+.logo{
+
+    transition:.4s;
+}
+
+.logo:hover{
+
+    color:var(--primary);
+
+    transform:scale(1.05);
+}
+
+/*=========================================
+        NAVIGATION LINKS
+=========================================*/
+
+.nav-links a{
+
+    position:relative;
+}
+
+.nav-links a::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:0;
+
+    height:2px;
+
+    left:0;
+
+    bottom:-6px;
+
+    background:linear-gradient(
+        90deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    transition:.4s;
+}
+
+.nav-links a:hover::after{
+
+    width:100%;
+}
+
+/*=========================================
+            BUTTONS
+=========================================*/
+
+.btn-primary:hover{
+
+    transform:translateY(-6px) scale(1.04);
+}
+
+.btn-secondary:hover{
+
+    transform:translateY(-6px) scale(1.04);
+}
+
+/*=========================================
+        SOCIAL ICONS
+=========================================*/
+
+.social-icons a:hover{
+
+    transform:translateY(-8px) rotate(360deg);
+}
+
+/*=========================================
+            SKILL CARDS
+=========================================*/
+
+.skill-card:hover{
+
+    transform:
+
+        translateY(-10px)
+
+        scale(1.03);
+
+}
+
+/*=========================================
+        PROJECT CARDS
+=========================================*/
+
+.project-card{
+
+    overflow:hidden;
+}
+
+.project-card img{
+
+    transition:.5s;
+}
+
+.project-card:hover img{
+
+    transform:scale(1.08);
+}
+
+.project-card:hover{
+
+    box-shadow:
+
+    0 20px 45px
+
+    rgba(201,161,59,.25);
+
+}
+
+/*=========================================
+        EXPERIENCE CARD
+=========================================*/
+
+.experience-card:hover .experience-icon{
+
+    transform:rotate(10deg) scale(1.1);
+}
+
+/*=========================================
+        CERTIFICATE CARD
+=========================================*/
+
+.certificate-card:hover .certificate-icon{
+
+    transform:scale(1.15);
+
+}
+
+/*=========================================
+            WHY CARD
+=========================================*/
+
+.why-card:hover i{
+
+    transform:translateY(-5px);
+
+}
+
+/*=========================================
+        CONTACT CARD
+=========================================*/
+
+.contact-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+/*=========================================
+        CONTACT INPUT
+=========================================*/
+
+.contact-form input:focus,
+
+.contact-form textarea:focus{
+
+    box-shadow:
+
+    0 0 20px
+
+    rgba(201,161,59,.3);
+
+}
+
+/*=========================================
+            FOOTER ICONS
+=========================================*/
+
+.footer-social a:hover{
+
+    transform:
+
+        translateY(-8px)
+
+        rotate(360deg);
+
+}
+
+/*=========================================
+        SCROLL INDICATOR
+=========================================*/
+
+.scroll-down span::before{
+
+    animation:scrollDown 2s infinite;
+
+}
+
+@keyframes scrollDown{
+
+    0%{
+
+        opacity:0;
+
+        transform:
+
+        translate(-50%,0);
+
+    }
+
+    50%{
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:
+
+        translate(-50%,18px);
+
+    }
+
+}
+
+/*=========================================
+            FADE UP
+=========================================*/
+
+.fade-up{
+
+    animation:fadeUp .8s ease forwards;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*=========================================
+            FADE LEFT
+=========================================*/
+
+.fade-left{
+
+    animation:fadeLeft .8s ease forwards;
+
+}
+
+@keyframes fadeLeft{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(-40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+/*=========================================
+            FADE RIGHT
+=========================================*/
+
+.fade-right{
+
+    animation:fadeRight .8s ease forwards;
+
+}
+
+@keyframes fadeRight{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+/*=========================================
+            ZOOM IN
+=========================================*/
+
+.zoom-in{
+
+    animation:zoomIn .8s ease forwards;
+
+}
+
+@keyframes zoomIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.8);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+/*=========================================
+        FLOATING BACKGROUND
+=========================================*/
+
+.gradient-bg{
+
+    position:fixed;
+
+    width:600px;
+
+    height:600px;
+
+    top:-200px;
+
+    right:-200px;
+
+    border-radius:50%;
+
+    background:
+
+    radial-gradient(
+
+    circle,
+
+    rgba(201,161,59,.15),
+
+    transparent 70%
+
+    );
+
+    filter:blur(50px);
+
+    z-index:-2;
+
+    animation:gradientMove 15s infinite alternate;
+
+}
+
+@keyframes gradientMove{
+
+    from{
+
+        transform:
+
+        translate(0,0);
+
+    }
+
+    to{
+
+        transform:
+
+        translate(-150px,120px);
+
+    }
+
+}
+
+/*=========================================
+        IMAGE SHINE EFFECT
+=========================================*/
+
+.image-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.image-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:50%;
+
+    height:100%;
+
+    background:
+
+    rgba(255,255,255,.18);
+
+    transform:skewX(-25deg);
+
+}
+
+.image-card:hover::before{
+
+    left:150%;
+
+    transition:1s;
+
+}
+
+/*=========================================
+        BACK TO TOP
+=========================================*/
+
+#backToTop:hover{
+
+    animation:bounce .6s;
+
+}
+
+@keyframes bounce{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    30%{
+
+        transform:translateY(-8px);
+
+    }
+
+    60%{
+
+        transform:translateY(0);
+
+    }
+
+    80%{
+
+        transform:translateY(-4px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*=========================================
+            TEXT GLOW
+=========================================*/
+
+.hero-left h1 span{
+
+    animation:textGlow 2s infinite alternate;
+
+}
+
+@keyframes textGlow{
+
+    from{
+
+        text-shadow:
+
+        0 0 5px #c9a13b;
+
+    }
+
+    to{
+
+        text-shadow:
+
+        0 0 25px #8a1f2d;
+
+    }
+
+}
+
+/*=========================================
+            END
+=========================================*/
